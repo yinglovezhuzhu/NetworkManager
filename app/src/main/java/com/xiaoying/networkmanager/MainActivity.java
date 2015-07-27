@@ -58,9 +58,9 @@ public class MainActivity extends Activity {
         @Override
         public void onNetworkStateChaged(boolean networkConnected, NetworkInfo currentNetwok, NetworkInfo lastNetwork) {
             if(networkConnected) {
-                mTvMsg.setText("网络已连接已断开");
-            } else {
                 mTvMsg.setText("网络已连接" + (null == currentNetwok ? "" : currentNetwok.toString()));
+            } else {
+                mTvMsg.setText("网络已连接已断开");
             }
         }
     };
