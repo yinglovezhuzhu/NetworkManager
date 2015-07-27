@@ -29,10 +29,10 @@ public abstract class NetworkObserver {
 
     /**
      * 网络状态发生改变
-     * @param noConnectivity 是否没有连接，比如：没有网络
+     * @param networkConnected 是否没有连接，比如：没有网络
      * @param currentNetwok 当前网络连接信息，没有为null
      * @param lastNetwork 上一个网络连接信息，没有为null
      */
-    public abstract void onNetworkStateChaged(boolean noConnectivity, NetworkInfo currentNetwok,
+    public abstract void onNetworkStateChaged(boolean networkConnected, NetworkInfo currentNetwok,
                                     NetworkInfo lastNetwork);
 }

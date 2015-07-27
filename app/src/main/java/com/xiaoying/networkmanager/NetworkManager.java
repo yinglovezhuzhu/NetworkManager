@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.widget.Toast;
 
 /**
  * 网络状态管理类
@@ -33,7 +32,7 @@ import android.widget.Toast;
  */
 public class NetworkManager {
 
-    private final Context mContext;
+    private final Context mAppContext;
 
     private final ConnectivityManager mConnectivityManager;
 
@@ -46,9 +45,9 @@ public class NetworkManager {
     private static NetworkManager mInstance = null;
 
     private NetworkManager(Context context) {
-        mContext = context.getApplicationContext();
-        mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        mContext.registerReceiver(new NetworkReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        mAppContext = context.getApplicationContext();
+        mConnectivityManager = (ConnectivityManager) mAppContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        mAppContext.registerReceiver(new NetworkReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         // 初始化网络状态
         mCurrentNetwork = mConnectivityManager.getActiveNetworkInfo();
@@ -110,7 +109,9 @@ public class NetworkManager {
     }
 
 
-
+    /**
+     * 网络状态广播接收器
+     */
     private class NetworkReceiver extends BroadcastReceiver {
 
         @Override
@@ -124,15 +125,15 @@ public class NetworkManager {
 
             NetworkInfo lastNetwork = mCurrentNetwork;
             boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            if(noConnectivity) {
-                mNetworkConnected = false;
+            mNetworkConnected = !noConnectivity;
+            if(mNetworkConnected) {
+                mCurrentNetwork = mConnectivityManager.getActiveNetworkInfo();
+            } else {
                 mCurrentNetwork = null;
                 // 没有网络连接，直接返回
-            } else {
-                mCurrentNetwork = mConnectivityManager.getActiveNetworkInfo();
             }
 
-            mNetworkObservable.notifyNetworkChaged(noConnectivity, mCurrentNetwork, lastNetwork);
+            mNetworkObservable.notifyNetworkChaged(mNetworkConnected, mCurrentNetwork, lastNetwork);
         }
     }
 

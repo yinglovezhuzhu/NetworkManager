@@ -27,12 +27,12 @@ import android.net.NetworkInfo;
  */
 public class NetworkObservable extends Observable<NetworkObserver> {
 
-    public void notifyNetworkChaged(boolean noConnectivity, NetworkInfo currentNetwok,
+    public void notifyNetworkChaged(boolean networkConnected, NetworkInfo currentNetwok,
                                     NetworkInfo lastNetwork) {
         synchronized (mObservers) {
             for(int i = mObservers.size() - 1; i >= 0; i--) {
                 NetworkObserver observer = mObservers.get(i);
-                observer.onNetworkStateChaged(noConnectivity, currentNetwok, lastNetwork);
+                observer.onNetworkStateChaged(networkConnected, currentNetwok, lastNetwork);
             }
         }
     }
