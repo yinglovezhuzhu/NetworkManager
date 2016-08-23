@@ -133,7 +133,7 @@ public class NetworkManager {
                 // 没有网络连接，直接返回
             }
 
-            mNetworkObservable.notifyNetworkChaged(mNetworkConnected, mCurrentNetwork, lastNetwork);
+            mNetworkObservable.notifyNetworkChanged(mNetworkConnected, mCurrentNetwork, lastNetwork);
         }
     }
 

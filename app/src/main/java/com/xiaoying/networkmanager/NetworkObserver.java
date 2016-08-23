@@ -33,6 +33,6 @@ public abstract class NetworkObserver {
      * @param currentNetwok 当前网络连接信息，没有为null
      * @param lastNetwork 上一个网络连接信息，没有为null
      */
-    public abstract void onNetworkStateChaged(boolean networkConnected, NetworkInfo currentNetwok,
-                                    NetworkInfo lastNetwork);
+    public abstract void onNetworkStateChanged(boolean networkConnected, NetworkInfo currentNetwok,
+                                               NetworkInfo lastNetwork);
 }

@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 
     private NetworkObserver mNetworkObserver = new NetworkObserver() {
         @Override
-        public void onNetworkStateChaged(boolean networkConnected, NetworkInfo currentNetwok, NetworkInfo lastNetwork) {
+        public void onNetworkStateChanged(boolean networkConnected, NetworkInfo currentNetwok, NetworkInfo lastNetwork) {
             if(networkConnected) {
                 mTvMsg.setText("网络已连接" + (null == currentNetwok ? "" : currentNetwok.toString()));
             } else {
