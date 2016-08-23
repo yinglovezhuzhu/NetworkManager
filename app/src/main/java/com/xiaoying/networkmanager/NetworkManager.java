@@ -32,9 +32,9 @@ import android.net.NetworkInfo;
  */
 public class NetworkManager {
 
-    private final Context mAppContext;
+    private Context mContext;
 
-    private final ConnectivityManager mConnectivityManager;
+    private ConnectivityManager mConnectivityManager;
 
     private final NetworkObservable mNetworkObservable = new NetworkObservable();
 
@@ -42,25 +42,34 @@ public class NetworkManager {
 
     private NetworkInfo mCurrentNetwork = null;
 
+    private boolean mInitialized = false;
+
     private static NetworkManager mInstance = null;
 
-    private NetworkManager(Context context) {
-        mAppContext = context.getApplicationContext();
-        mConnectivityManager = (ConnectivityManager) mAppContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        mAppContext.registerReceiver(new NetworkReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    private NetworkManager() {
+
+    }
+
+    public static NetworkManager getInstance() {
+        synchronized (NetworkManager.class) {
+            if(null == mInstance) {
+                mInstance = new NetworkManager();
+            }
+            return mInstance;
+        }
+    }
+
+    public void initialized(Context context) {
+        if(!mInitialized) {
+            mContext = context.getApplicationContext();
+            mConnectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            mContext.registerReceiver(new NetworkReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            mInitialized = true;
+        }
 
         // 初始化网络状态
         mCurrentNetwork = mConnectivityManager.getActiveNetworkInfo();
         mNetworkConnected = null != mCurrentNetwork && mCurrentNetwork.isConnected();
-    }
-
-    public static NetworkManager getInstance(Context context) {
-        synchronized (NetworkManager.class) {
-            if(null == mInstance) {
-                mInstance = new NetworkManager(context);
-            }
-            return mInstance;
-        }
     }
 
     /**
@@ -109,9 +118,7 @@ public class NetworkManager {
     }
 
 
-    /**
-     * 网络状态广播接收器
-     */
+
     private class NetworkReceiver extends BroadcastReceiver {
 
         @Override
@@ -136,5 +143,6 @@ public class NetworkManager {
             mNetworkObservable.notifyNetworkChanged(mNetworkConnected, mCurrentNetwork, lastNetwork);
         }
     }
+
 
 }

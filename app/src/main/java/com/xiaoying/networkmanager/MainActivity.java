@@ -37,22 +37,24 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        NetworkManager.getInstance().initialized(this);
+
         mTvMsg = (TextView) findViewById(R.id.tv_msg);
 
-        if(NetworkManager.getInstance(this).isNetworkConnected()) {
+        if(NetworkManager.getInstance().isNetworkConnected()) {
             mTvMsg.setText("网络已连接");
         } else {
             mTvMsg.setText("无网络已连接");
         }
 
-        NetworkManager.getInstance(this).registerNetworkObserver(mNetworkObserver);
+        NetworkManager.getInstance().registerNetworkObserver(mNetworkObserver);
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NetworkManager.getInstance(this).unregisterNetworkObserver(mNetworkObserver);
+        NetworkManager.getInstance().unregisterNetworkObserver(mNetworkObserver);
     }
 
     private NetworkObserver mNetworkObserver = new NetworkObserver() {
