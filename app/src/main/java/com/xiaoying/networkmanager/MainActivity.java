@@ -22,6 +22,7 @@ package com.xiaoying.networkmanager;
 import android.app.Activity;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -56,12 +57,13 @@ public class MainActivity extends Activity {
 
     private NetworkObserver mNetworkObserver = new NetworkObserver() {
         @Override
-        public void onNetworkStateChanged(boolean networkConnected, NetworkInfo currentNetwok, NetworkInfo lastNetwork) {
+        public void onNetworkStateChanged(boolean networkConnected, NetworkInfo currentNetwork, NetworkInfo lastNetwork) {
             if(networkConnected) {
-                mTvMsg.setText("网络已连接" + (null == currentNetwok ? "" : currentNetwok.toString()));
+                mTvMsg.setText("网络已连接" + (null == currentNetwork ? "" : currentNetwork.toString()));
             } else {
                 mTvMsg.setText("网络已连接已断开");
             }
+            Log.e("AAAA", null == currentNetwork ? "无网络连接" : currentNetwork.toString());
         }
     };
 
